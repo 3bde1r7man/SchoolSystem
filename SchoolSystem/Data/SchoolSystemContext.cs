@@ -6,7 +6,11 @@ namespace SchoolSystem.Data
     public class SchoolSystemContext : DbContext
     {
         public DbSet<Student> Students { get; set; }
-
+        public DbSet<Teacher> Teacher { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<Attendance> Attendance { get; set; }
+        public DbSet<StudentCourses> StudentCourses { get; set; }
+        public DbSet<TeacherCourses> TeacherCourses { get; set; }
 
         public SchoolSystemContext(DbContextOptions<SchoolSystemContext> options) : base(options)
         {
@@ -26,6 +30,7 @@ namespace SchoolSystem.Data
             string databasePath = Path.Combine(databaseDirectory, "SchoolDB.db");
             optionsBuilder.UseSqlite($"Data Source={databasePath}");
         }
+        
 
     }
 
