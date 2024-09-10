@@ -229,7 +229,7 @@ namespace SchoolSystem.Controllers
 
         // update student score in a course
         [HttpPut("{studentId}/update-score/{courseId}")]
-        public async Task<ActionResult<StudentCourses>> UpdateStudentScore(int? studentId, int? courseId, [FromBody] StudentCourses studentCourse)
+        public async Task<ActionResult<StudentCourses>> UpdateStudentScore(int? studentId, int? courseId, [FromBody] int score)
         {
             var student = await _context.Students.FindAsync(studentId);
             if (student == null)
@@ -248,7 +248,7 @@ namespace SchoolSystem.Controllers
                 return NotFound();
             }
 
-            studentCourseToUpdate.Score = studentCourse.Score;
+            studentCourseToUpdate.Score = score;
             _context.Entry(studentCourseToUpdate).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
