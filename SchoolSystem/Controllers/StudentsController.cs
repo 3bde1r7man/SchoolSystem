@@ -197,6 +197,89 @@ namespace SchoolSystem.Controllers
         }
 
 
+
+        [HttpPut("{studentId}/unregister-course/{courseId}")]
+        public async Task<ActionResult<StudentCourses>> UnregisterStudentFromCourse(int? studentId, int? courseId)
+        {
+            var student = await _context.Students.FindAsync(studentId);
+            if (student == null)
+            {
+                return NotFound();
+            }
+            var course = await _context.Courses.FindAsync(courseId);
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            course.CurrentEnrollment--;
+            _context.Entry(course).State = EntityState.Modified;
+
+            var studentCourse = await _context.StudentCourses.Where(sc => sc.StudentId == studentId && sc.CourseId == courseId).FirstOrDefaultAsync();
+            if (studentCourse == null)
+            {
+                return NotFound();
+            }
+
+            _context.StudentCourses.Remove(studentCourse);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetStudentCourses", new { id = studentId }, studentCourse);
+        }
+
+        // update student score in a course
+        [HttpPut("{studentId}/update-score/{courseId}")]
+        public async Task<ActionResult<StudentCourses>> UpdateStudentScore(int? studentId, int? courseId, [FromBody] StudentCourses studentCourse)
+        {
+            var student = await _context.Students.FindAsync(studentId);
+            if (student == null)
+            {
+                return NotFound();
+            }
+            var course = await _context.Courses.FindAsync(courseId);
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            var studentCourseToUpdate = await _context.StudentCourses.Where(sc => sc.StudentId == studentId && sc.CourseId == courseId).FirstOrDefaultAsync();
+            if (studentCourseToUpdate == null)
+            {
+                return NotFound();
+            }
+
+            studentCourseToUpdate.Score = studentCourse.Score;
+            _context.Entry(studentCourseToUpdate).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetStudentCourses", new { id = studentId }, studentCourseToUpdate);
+        }
+
+        // get student score in a course
+        [HttpGet("{studentId}/get-score/{courseId}")]
+        public async Task<ActionResult<StudentCourses>> GetStudentScore(int? studentId, int? courseId)
+        {
+            var student = await _context.Students.FindAsync(studentId);
+            if (student == null)
+            {
+                return NotFound();
+            }
+            var course = await _context.Courses.FindAsync(courseId);
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            var studentCourse = await _context.StudentCourses.Where(sc => sc.StudentId == studentId && sc.CourseId == courseId).FirstOrDefaultAsync();
+            if (studentCourse == null)
+            {
+                return NotFound();
+            }
+
+            return studentCourse;
+        }
+
+
         private bool StudentExists(int? id)
         {
             return _context.Students.Any(e => e.Id == id);
