@@ -1,0 +1,509 @@
+{
+	"info": {
+		"_postman_id": "ac291f16-9118-4120-a385-cba058bfe1d9",
+		"name": "School System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31618884"
+	},
+	"item": [
+		{
+			"name": "Courses",
+			"item": [
+				{
+					"name": "All Courses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/Courses",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"Courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Course",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Fundamentals of Computer Science\",\r\n  \"description\": \"Basic concepts of computer science \",\r\n  \"credits\": 3,\r\n  \"grade\": 1,\r\n  \"enrollmentLimit\": 500,\r\n  \"currentEnrollment\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/Courses",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"Courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "One Course",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/Courses/{{courseId}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"Courses",
+								"{{courseId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Course",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Fundamentals of Computer Science\",\r\n    \"description\": \"Basic concepts of computer science \",\r\n    \"credits\": 3,\r\n    \"grade\": 1,\r\n    \"enrollmentLimit\": 700,\r\n    \"currentEnrollment\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/Courses/{{courseId}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"Courses",
+								"{{courseId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Course",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/Courses/{{courseId}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"Courses",
+								"{{courseId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Students",
+			"item": [
+				{
+					"name": "All Students",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/Students",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"Students"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "One Student",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/Students/{{studid}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"Students",
+								"{{studid}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Student",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"Abdelrhman\",\r\n  \"lastName\": \"Mostafa\",\r\n  \"gender\": \"Male\",\r\n  \"email\": \"abdo@gmail.com\",\r\n  \"phoneNumber\": \"01143022394\",\r\n  \"address\": \"address\",\r\n  \"grade\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/Students",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"Students"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Student",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"Abdelrhman\",\r\n  \"lastName\": \"Mostafa\",\r\n  \"gender\": \"Male\",\r\n  \"email\": \"abdo@gmail.com\",\r\n  \"phoneNumber\": \"0114302294\",\r\n  \"address\": \"address\",\r\n  \"id\" : 1,\r\n  \"grade\": 4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/Students/{{studid}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"Students",
+								"{{studid}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Student",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/Students/{{studid}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"Students",
+								"{{studid}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Student Courses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/Students/{{studid}}/courses",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"Students",
+								"{{studid}}",
+								"courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Avaliable Courses for Student",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/Students/{{studid}}/available-courses",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"Students",
+								"{{studid}}",
+								"available-courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register Course for Student",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/Students/{{studid}}/register-course/{{courseId}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"Students",
+								"{{studid}}",
+								"register-course",
+								"{{courseId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Student Score in a Course",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "90",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/Students/{{studid}}/update-score/{{courseId}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"Students",
+								"{{studid}}",
+								"update-score",
+								"{{courseId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/Students/{{studid}}/get-score/{{courseId}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"Students",
+								"{{studid}}",
+								"get-score",
+								"{{courseId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Teachers",
+			"item": [
+				{
+					"name": "All Teachers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/Teachers",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"Teachers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Teacher",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"Mohammed\",\r\n  \"lastName\": \"Mostafa\",\r\n  \"gender\": \"Male\",\r\n  \"email\": \"Mohammed@gmail.com\",\r\n  \"phoneNumber\": \"01143022395\",\r\n  \"address\": \"address\",\r\n  \"salary\": 50000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/Teachers",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"Teachers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "One Teacher",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/Teachers/{{teacherId}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"Teachers",
+								"{{teacherId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Teacher",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"firstName\": \"Mohammed\",\r\n    \"lastName\": \"Mostafa\",\r\n    \"gender\": \"Male\",\r\n    \"email\": \"Mohammed@gmail.com\",\r\n    \"phoneNumber\": \"01143022395\",\r\n    \"address\": \"address\",\r\n    \"salary\": 60000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/Teachers/{{teacherId}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"Teachers",
+								"{{teacherId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Teacher",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/Teachers/{{teacherId}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"Teachers",
+								"{{teacherId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Teacher Courses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/Teachers/{{teacherId}}/Courses",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"Teachers",
+								"{{teacherId}}",
+								"Courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign Course to Teacher",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/Teachers/{{teacherId}}/AssignCourse/{{courseId}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"Teachers",
+								"{{teacherId}}",
+								"AssignCourse",
+								"{{courseId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unassign Course to Teacher",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/Teachers/{{teacherId}}/UnassignCourse/{{courseId}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"Teachers",
+								"{{teacherId}}",
+								"UnassignCourse",
+								"{{courseId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

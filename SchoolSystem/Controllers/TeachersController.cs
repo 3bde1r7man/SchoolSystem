@@ -100,6 +100,83 @@ namespace SchoolSystem.Controllers
             return NoContent();
         }
 
+
+        // GET: api/Teachers/5/Courses
+        [HttpGet("{id}/Courses")]
+        public async Task<ActionResult<IEnumerable<Course>>> GetTeacherCourses(int? id)
+        {
+            var teacherCourses = await _context.TeacherCourses
+                .Where(tc => tc.TeacherId == id)
+                .ToListAsync();
+
+            List<Course> courses = new List<Course>();
+
+            foreach (var teacherCourse in teacherCourses)
+            {
+                var course = await _context.Courses.FindAsync(teacherCourse.CourseId);
+                courses.Add(course);
+            }
+
+            return courses;
+        }
+
+        // POST: api/Teachers/5/AssignCourse/1
+        [HttpPost("{id}/AssignCourse/{courseId}")]
+        public async Task<IActionResult> AssignCourse(int? id, int? courseId)
+        {
+            var teacher = await _context.Teacher.FindAsync(id);
+            var course = await _context.Courses.FindAsync(courseId);
+            
+
+            if (teacher == null || course == null)
+            {
+                return NotFound();
+            }
+
+            TeacherCourses teacherCourses = new TeacherCourses 
+            { 
+                TeacherId = id,
+                CourseId = courseId
+            };
+            _context.TeacherCourses.Add(teacherCourses);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!TeacherExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction("GetTeacherCourses", new { id = id });
+
+        }
+
+        // DELETE: api/Teachers/5/UnassignCourse/1
+        [HttpDelete("{id}/UnassignCourse/{courseId}")]
+        public async Task<IActionResult> UnassignCourse(int? id, int? courseId)
+        {
+            var teacherCourse = await _context.TeacherCourses
+                .Where(tc => tc.TeacherId == id && tc.CourseId == courseId)
+                .FirstOrDefaultAsync();
+
+            if (teacherCourse == null)
+            {
+                return NotFound();
+            }
+
+            _context.TeacherCourses.Remove(teacherCourse);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("GetTeacherCourses", new { id = id });
+        }
+
         private bool TeacherExists(int? id)
         {
             return _context.Teacher.Any(e => e.Id == id);

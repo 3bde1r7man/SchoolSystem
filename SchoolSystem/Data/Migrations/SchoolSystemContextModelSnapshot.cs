@@ -17,36 +17,6 @@ namespace SchoolSystem.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
 
-            modelBuilder.Entity("SchoolSystem.Models.Attendance", b =>
-                {
-                    b.Property<int?>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("CourseId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("Date")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool?>("IsPresent")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Reason")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("StudentId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("Attendance");
-                });
-
             modelBuilder.Entity("SchoolSystem.Models.Course", b =>
                 {
                     b.Property<int?>("Id")
@@ -178,22 +148,11 @@ namespace SchoolSystem.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("TeacherId");
+
                     b.ToTable("TeacherCourses");
-                });
-
-            modelBuilder.Entity("SchoolSystem.Models.Attendance", b =>
-                {
-                    b.HasOne("SchoolSystem.Models.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId");
-
-                    b.HasOne("SchoolSystem.Models.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId");
-
-                    b.Navigation("Course");
-
-                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("SchoolSystem.Models.StudentCourses", b =>
@@ -209,6 +168,21 @@ namespace SchoolSystem.Migrations
                     b.Navigation("Course");
 
                     b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("SchoolSystem.Models.TeacherCourses", b =>
+                {
+                    b.HasOne("SchoolSystem.Models.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId");
+
+                    b.HasOne("SchoolSystem.Models.Teacher", "Teacher")
+                        .WithMany()
+                        .HasForeignKey("TeacherId");
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Teacher");
                 });
 #pragma warning restore 612, 618
         }

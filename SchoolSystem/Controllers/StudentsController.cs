@@ -124,8 +124,14 @@ namespace SchoolSystem.Controllers
             }
 
             _context.Students.Remove(student);
-            await _context.SaveChangesAsync();
-
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                return BadRequest("Student is registered in a course");
+            }
             return NoContent();
         }
 
@@ -140,13 +146,22 @@ namespace SchoolSystem.Controllers
                 return NotFound();
             }
 
-            var studentCourses = _context.StudentCourses.Where(sc => sc.StudentId == id).Select(sc => sc.Course).ToList();
-            return studentCourses;
+            List<Course> courses = await _context.StudentCourses
+                .Where(sc => sc.StudentId == id)
+                .Join(
+                    _context.Courses,
+                    sc => sc.CourseId,
+                    c => c.Id,
+                    (sc, c) => c
+                )
+                .ToListAsync();
+
+            return courses;
         }
 
-        // GET: api/Students/5/avaliable-courses
+        // GET: api/Students/5/available-courses
         // For a given student, return all courses He is not registered in yet equal to the student's grade
-        [HttpGet("{id}/avaliable-courses")]
+        [HttpGet("{id}/available-courses")]
         public async Task<ActionResult<IEnumerable<Course>>> GetStudentAvaliableCourses(int? id)
         {
             var student = await _context.Students.FindAsync(id);
@@ -155,11 +170,16 @@ namespace SchoolSystem.Controllers
                 return NotFound();
             }
 
-            var studentCourses = _context.StudentCourses.Where(sc => sc.StudentId == id).Select(sc => sc.Course).ToList();
-            var studentGrade = student.Grade;
-            var avaliableCourses = _context.Courses.Where(c => c.Grade == studentGrade && !studentCourses.Contains(c) && c.CurrentEnrollment < c.EnrollmentLimit).ToList();
-            
-            return avaliableCourses;
+            var availableCourses = await _context.Courses
+                .Where(c => c.Grade == student.Grade
+                         && c.CurrentEnrollment < c.EnrollmentLimit
+                         && !_context.StudentCourses
+                                .Where(sc => sc.StudentId == id)
+                                .Select(sc => sc.CourseId)
+                                .Contains(c.Id))
+                .ToListAsync();
+
+            return availableCourses;
         }
 
 
@@ -169,12 +189,8 @@ namespace SchoolSystem.Controllers
         public async Task<ActionResult<StudentCourses>> RegisterStudentInCourse(int? studentId, int? courseId)
         {
             var student = await _context.Students.FindAsync(studentId);
-            if (student == null)
-            {
-                return NotFound();
-            }
             var course = await _context.Courses.FindAsync(courseId);
-            if (course == null)
+            if (student == null || course == null)
             {
                 return NotFound();
             }
@@ -191,14 +207,21 @@ namespace SchoolSystem.Controllers
             };
 
             _context.StudentCourses.Add(studentCourse);
-            await _context.SaveChangesAsync();
 
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                return BadRequest("Student already registered in this course");
+            }
             return CreatedAtAction("GetStudentCourses", new { id = studentId }, studentCourse);
         }
 
-
-
-        [HttpPut("{studentId}/unregister-course/{courseId}")]
+        // DELETE: api/Students/5/unregister-course/1
+        // For a given student, unregister him from a course
+        [HttpDelete("{studentId}/unregister-course/{courseId}")]
         public async Task<ActionResult<StudentCourses>> UnregisterStudentFromCourse(int? studentId, int? courseId)
         {
             var student = await _context.Students.FindAsync(studentId);
@@ -222,7 +245,15 @@ namespace SchoolSystem.Controllers
             }
 
             _context.StudentCourses.Remove(studentCourse);
-            await _context.SaveChangesAsync();
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                return BadRequest("Student not registered in this course");
+            }
 
             return CreatedAtAction("GetStudentCourses", new { id = studentId }, studentCourse);
         }
@@ -241,6 +272,10 @@ namespace SchoolSystem.Controllers
             {
                 return NotFound();
             }
+            if(score < 0 || score > 100)
+            {
+                return BadRequest("Invalid score");
+            }
 
             var studentCourseToUpdate = await _context.StudentCourses.Where(sc => sc.StudentId == studentId && sc.CourseId == courseId).FirstOrDefaultAsync();
             if (studentCourseToUpdate == null)
@@ -250,7 +285,14 @@ namespace SchoolSystem.Controllers
 
             studentCourseToUpdate.Score = score;
             _context.Entry(studentCourseToUpdate).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                return BadRequest("Invalid score");
+            }
 
             return CreatedAtAction("GetStudentCourses", new { id = studentId }, studentCourseToUpdate);
         }

@@ -8,7 +8,6 @@ namespace SchoolSystem.Data
         public DbSet<Student> Students { get; set; }
         public DbSet<Teacher> Teacher { get; set; }
         public DbSet<Course> Courses { get; set; }
-        public DbSet<Attendance> Attendance { get; set; }
         public DbSet<StudentCourses> StudentCourses { get; set; }
         public DbSet<TeacherCourses> TeacherCourses { get; set; }
 
